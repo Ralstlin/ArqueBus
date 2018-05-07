@@ -1,0 +1,43 @@
+version: '1.0.{build}'
+image: Visual Studio 2017 Preview
+branches:
+  only:
+  - master
+init:
+  # Good practise, because Windows line endings are different from Unix/Linux ones
+  - cmd: git config --global core.autocrlf true
+install: 
+  - cd C:\
+  - cmd: mkdir testOutput
+  - if not exist opencover.zip appveyor DownloadFile "https://github.com/OpenCover/opencover/releases/download/4.6.519/opencover.4.6.519.zip" -FileName opencover.zip
+  - 7z x -y opencover.zip -o"C:\opencover" > nul
+  - choco upgrade dotnetcore --pre
+  - if not exist sonarqube.zip appveyor DownloadFile "https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/4.2.0.1214/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip" -FileName sonarqube.zip
+  - 7z x -y sonarqube.zip -o"C:\sonarqube" > nul
+environment:
+  CLI_VERSION: 2.0.0
+  sonarqubelogin:
+    secure: lToLhdSGQJx4Dd1SFy8TX7O9gPgsddQN3Fbkj+3CkbLUuuJlgo5aF055Gu8F5GuO
+before_build:
+  - cd %appveyor_build_folder%
+  - cmd: dotnet C:\sonarqube\SonarScanner.MSBuild.dll begin /k:"arquebus" /d:sonar.organization="ralstlin-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="%sonarqubelogin%" /d:sonar.cs.xunit.reportsPaths="C:\testOutput\XUnit.xml" /d:sonar.cs.opencover.reportsPaths="C:\testOutput\coverage.xml" /d:sonar.coverage.exclusions=**/*tests.cs,**/*test.cs,**/arquebus.tests/**/*,**/*tests.cs*,**/*tests*,*tests*,*test*,*Test*,**/*Test* 
+build_script:  
+# Display .NET Core version
+  - ps: dotnet --info  
+  - ps: dotnet restore
+  - ps: dotnet build .\ArqueBus.sln
+  - ps: Pop-Location
+after_build:
+  # For once the build has completed
+
+test_script:
+  # restore packages for our unit tests
+  - cmd: dotnet restore ./tests/ArqueBus.Tests/ArqueBus.Tests.csproj --verbosity m
+  # run the unit tests (requires changing into the test directory)
+  - cd %appveyor_build_folder%\tests\ArqueBus.Tests
+  - cmd: C:\OpenCover\OpenCover.Console.exe -target:"c:\Program Files\dotnet\dotnet.exe" -targetargs:"xunit --no-build -xml C:\testOutput\XUnit.xml" -output:C:\testOutput\coverage.xml -oldStyle -filter:"+[ArqueBus*]* -[ArqueBus*Tests*]*" -register:user
+on_finish :
+  # any cleanup in here
+  - cd %appveyor_build_folder%
+  - cmd: dotnet C:\sonarqube\SonarScanner.MSBuild.dll end /d:sonar.login="%sonarqubelogin%"
+deploy: off

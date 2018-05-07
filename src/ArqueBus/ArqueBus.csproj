@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <DebugType>full</DebugType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Nauzet Quintana Vega</Authors>
+    <Description>ArqueBus is a .Net Standard 2.0 generic open source memory event bus.</Description>
+    <Copyright>http://www.opensource.org/licenses/mit-license.php</Copyright>
+    <PackageLicenseUrl>https://github.com/Ralstlin/ArqueBus/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Ralstlin/ArqueBus</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Ralstlin/ArqueBus/master/icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Ralstlin/ArqueBus</RepositoryUrl>
+    <RepositoryType>event bus</RepositoryType>
+    <PackageTags>.netstandard .netcore event bus service subscribe message</PackageTags>
+    <Version>1.6.1</Version>
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.8.0" />
+  </ItemGroup>
+
+</Project>
