@@ -10,6 +10,10 @@ ArqueBus is a .Net core generic memory event bus.
 | **Nuget** | [![Nuget](https://img.shields.io/nuget/v/arquebus.svg)](http://nuget.org/packages/arquebus) [![Nuget](https://buildstats.info/nuget/arquebus)](http://nuget.org/packages/arquebus)   |
 
 # Usage
+The way to create a bus is really simple, just `new EventBus<T, TModel>();` where
+
+* `T` is the type used to find the subscription!
+* `TModel` is the type for the objects passed by the publications, you can use `object`, a base class or implement an interface for your models.
 
 ## Simple Subscribe/Publish:
 ```csharp 
@@ -46,4 +50,3 @@ var result = await listenedTask;
 Console.Writeline(result.Skip(0).First()) // published-string-1
 Console.Writeline(result.Skip(1).First()) // published-string-2
 ```
-
