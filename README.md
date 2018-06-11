@@ -9,6 +9,7 @@ ArqueBus is a .Net core generic memory event bus.
 | **Quality** | [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=arquebus&metric=alert_status)](https://sonarcloud.io/api/project_badges/measure?project=arquebus&metric=alert_status) [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=arquebus&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=arquebus) [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=arquebus&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=arquebus) | 
 | **Nuget** | [![Nuget](https://img.shields.io/nuget/v/arquebus.svg)](http://nuget.org/packages/arquebus) [![Nuget](https://buildstats.info/nuget/arquebus)](http://nuget.org/packages/arquebus)   |
 
+
 # Usage
 The way to create a bus is really simple, just `new EventBus<T, TModel>();` where
 
