@@ -11,7 +11,7 @@ install:
   - cmd: mkdir testOutput
   - if not exist opencover.zip appveyor DownloadFile "https://github.com/OpenCover/opencover/releases/download/4.6.519/opencover.4.6.519.zip" -FileName opencover.zip
   - 7z x -y opencover.zip -o"C:\opencover" > nul
-  - choco upgrade dotnetcore --pre
+  - choco upgrade dotnetcore --version 2.1.0
   - if not exist sonarqube.zip appveyor DownloadFile "https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/4.2.0.1214/sonar-scanner-msbuild-4.2.0.1214-netcoreapp2.0.zip" -FileName sonarqube.zip
   - 7z x -y sonarqube.zip -o"C:\sonarqube" > nul
 environment:

@@ -139,11 +139,13 @@ namespace ArqueBus
                 Subscriptions.TryAdd(target, new ConcurrentDictionary<SubscriptionIdentity<T>, ISubscription<T, TModel>>());
             }
 
-            foreach (var subs in Subscriptions[target])
+            if (Subscriptions.ContainsKey(target))
             {
-                await subs.Value.Run(target, data);
+                foreach (var subs in Subscriptions[target])
+                {
+                    await subs.Value.Run(target, data);
+                }
             }
-            
         }
 
         /// <summary>
