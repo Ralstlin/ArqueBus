@@ -18,6 +18,30 @@ namespace ArqueBus
             Subscriptions = new ConcurrentDictionary<T, ConcurrentDictionary<SubscriptionIdentity<T>, ISubscription<T, TModel>>>();
         }
 
+        public virtual SubscriptionIdentity<T> Subscribe<TData>(T target, Action<TData> action) where TData : TModel
+        {
+            if (target == null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            if (!Subscriptions.ContainsKey(target))
+            {
+                Subscriptions.TryAdd(target, new ConcurrentDictionary<SubscriptionIdentity<T>, ISubscription<T, TModel>>());
+            }
+
+            var identity = new SubscriptionIdentity<T>(target);
+            Action<TModel> modelAction = (model) => { action((TData)model); };
+
+            Subscriptions[target].TryAdd(identity, new Subscription<T, TModel>(modelAction, identity));
+            return identity;
+        }
+
         public virtual SubscriptionIdentity<T> Subscribe(T target, Action<TModel> action) 
         {
             if (target == null)

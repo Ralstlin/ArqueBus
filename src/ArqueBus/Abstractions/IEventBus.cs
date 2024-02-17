@@ -7,6 +7,7 @@ namespace ArqueBus.Abstractions
 {
     public interface IEventBus<T, TModel> where TModel : class
     {
+        SubscriptionIdentity<T> Subscribe<TData>(T target, Action<TData> action) where TData : TModel;
         SubscriptionIdentity<T> Subscribe(T target, Action<TModel> action);
         SubscriptionIdentity<T> SubscribeOnce(T target, Action<TModel> action);
         void Publish(T target, TModel data);
